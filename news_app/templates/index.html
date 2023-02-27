@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>news - home</title>
+</head>
+<body>
+  {% for p in posts %}
+
+  <p> {{p.title}}</p>
+  <p> {{p.content}}</p>
+
+  {% if perms.news_app.change_post %}
+    <a href="{% url 'edit' p.id %}"> ערוך </a>
+    {% endif %}
+
+  {% if perms.news_app.delete_post %}
+    <a href="{% url 'delete' p.id %}"> מחיקה </a>
+    {% endif %}
+
+  {% endfor %}
+</body>
+</html>
