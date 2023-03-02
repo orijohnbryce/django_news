@@ -1,10 +1,18 @@
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import permission_required
 from django.views.generic import CreateView, UpdateView
 from .models import Post
+
+# from .serializers import post_serializer
+
+
+def serve_ynet(request):
+    posts = Post.objects.all()
+    posts_sr = []#[post_serializer(post) for post in posts]
+    return JsonResponse({"posts": posts_sr})
 
 
 class PostCreation(CreateView):
@@ -12,14 +20,14 @@ class PostCreation(CreateView):
     fields = "__all__"
 
 
-@permission_required(["news_app.view_post"], login_url="temp2")
+# @permission_required(["news_app.view_post"], login_url="temp2")
 def home(request):
-    posts = Post.objects.all()
+
     return render(request=request, template_name="index.html",
                   context={"posts": posts})
 
 
-@permission_required("news_app.add_post")
+# @permission_required("news_app.add_post")
 def create_post(req):
     if req.method == "GET":
         # return render
